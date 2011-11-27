@@ -1,0 +1,16 @@
+Log2 est un système de logging en Java très léger et très simple.
+Je l'ai écris car j'avais besoin de log verbeux pour du debug et qui soit simple a utliser.
+
+Il y a pas de configuration par défaut, pas de threads, pas de mise en cache, pas de configuration par classes.
+Je m'en sert intensivement, et je n'ai pas de bug connus en attente de résolution.
+
+Le repository est un projet Eclipse.
+
+J'ai ajouté l'implémentation de org.slf4j.* pour prendre en charge ce framework de log.
+
+TODO
+- plus de commentaires, in english
+- un vrai systeme de rotation de fichiers de logs automatique
+- une documentation
+
+(English translation soon....)
