@@ -109,6 +109,7 @@ public class Log2 {
 	
 	/**
 	 * Si l'event correspond a baseclassname && event >= level alors on affiche en suivant filtertype.
+	 * Si l'event correspond a baseclassname && event < level alors on ne l'affiche pas du tout.
 	 */
 	public void createFilter(String baseclassname, Log2Level level, Log2FilterType filtertype) throws NullPointerException {
 		Log2Filter filter = new Log2Filter(baseclassname, level, filtertype);
