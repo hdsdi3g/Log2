@@ -70,7 +70,7 @@ public class Log2Event implements Serializable {
 					// System.out.println(clazzitf[positf].getName());
 				}
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 				continue;
 			}
 			
