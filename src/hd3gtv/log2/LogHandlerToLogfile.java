@@ -17,9 +17,15 @@
 
 package hd3gtv.log2;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Rotate is only manual
@@ -27,9 +33,21 @@ import java.io.IOException;
 public class LogHandlerToLogfile implements LogHandler {
 	
 	private File logfile;
+	private long maxsize;
+	private int maxfilelogs;
 	
-	public LogHandlerToLogfile(File logfile) {
+	/**
+	 * @param logfile like something.log
+	 * @param maxsize in bytes
+	 * @param maxfilelogs more than 3
+	 */
+	public LogHandlerToLogfile(File logfile, long maxsize, int maxfilelogs) {
 		this.logfile = logfile;
+		this.maxsize = maxsize;
+		if (maxfilelogs < 3) {
+			maxfilelogs = 3;
+		}
+		this.maxfilelogs = maxfilelogs;
 	}
 	
 	public synchronized void onLog2Event(Log2Event event) {
@@ -57,7 +75,13 @@ public class LogHandlerToLogfile implements LogHandler {
 		}
 	}
 	
-	public synchronized void rotatefile() {
+	/**
+	 * Rotate only if need to rotate.
+	 */
+	public synchronized void rotatefile() throws FileNotFoundException, IOException {
+		if (logfile.length() < maxsize) {
+			return;
+		}
 		
 		String path = logfile.getPath();
 		
@@ -65,17 +89,30 @@ public class LogHandlerToLogfile implements LogHandler {
 		
 		File currentfile;
 		
-		(new File(path + ".999")).delete();
+		(new File(path + "." + String.valueOf(maxfilelogs - 1) + ".gz")).delete();
 		
-		for (int pos = 998; pos >= 0; pos--) {
-			currentfile = new File(path + "." + String.valueOf(pos));
+		for (int pos = (maxfilelogs - 2); pos >= 0; pos--) {
+			currentfile = new File(path + "." + String.valueOf(pos) + ".gz");
 			if (currentfile.exists()) {
-				currentfile.renameTo(new File(path + "." + String.valueOf(pos + 1)));
+				currentfile.renameTo(new File(path + "." + String.valueOf(pos + 1) + ".gz"));
 			}
 		}
 		
-		logfile.renameTo(new File(path + ".0"));
-		
+		File newfilerotated = new File(path + ".0.gz");
+		File temp = new File(path + ".tmp");
+		logfile.renameTo(temp);
 		logfile = new File(path);
+		
+		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(temp));
+		GZIPOutputStream gzip = new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(newfilerotated)));
+		
+		byte[] buffer = new byte[0xFFFF];
+		int len;
+		while ((len = bis.read(buffer)) > 0) {
+			gzip.write(buffer, 0, len);
+		}
+		bis.close();
+		gzip.close();
+		temp.delete();
 	}
 }
