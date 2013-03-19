@@ -85,7 +85,7 @@ public class LogHandlerToLogfile implements LogHandler {
 		
 		String path = logfile.getPath();
 		
-		System.out.println("LogHandlerToLogfile, rotatefile() " + path);
+		// System.out.println("LogHandlerToLogfile, rotatefile() " + path);
 		
 		File currentfile;
 		
