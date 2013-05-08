@@ -107,6 +107,38 @@ public class Log2 {
 		event(event, Log2Level.ERROR, message, e);
 	}
 	
+	public synchronized void security(String message) {
+		event(new Log2Event(new Throwable(), this), Log2Level.SECURITY, message, null);
+	}
+	
+	public synchronized void security(String message, Log2Dumpable dumpable) {
+		Log2Event event = new Log2Event(new Throwable(), this);
+		if (dumpable != null) {
+			event.dump = dumpable.getLog2Dump();
+		}
+		event(event, Log2Level.SECURITY, message, null);
+	}
+	
+	public synchronized void security(String message, Log2Dump dump) {
+		Log2Event event = new Log2Event(new Throwable(), this);
+		event.dump = dump;
+		event(event, Log2Level.SECURITY, message, null);
+	}
+	
+	public synchronized void security(String message, Throwable e, Log2Dumpable dumpable) {
+		Log2Event event = new Log2Event(new Throwable(), this);
+		if (dumpable != null) {
+			event.dump = dumpable.getLog2Dump();
+		}
+		event(event, Log2Level.SECURITY, message, e);
+	}
+	
+	public synchronized void security(String message, Throwable e, Log2Dump dump) {
+		Log2Event event = new Log2Event(new Throwable(), this);
+		event.dump = dump;
+		event(event, Log2Level.SECURITY, message, e);
+	}
+	
 	/**
 	 * Si l'event correspond a baseclassname && event >= level alors on affiche en suivant filtertype.
 	 * Si l'event correspond a baseclassname && event < level alors on ne l'affiche pas du tout.

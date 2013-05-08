@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -307,6 +308,29 @@ public class Log2Dump implements Serializable, Log2DumpMBean {
 			element.value = strnull(null);
 		}
 		elements.add(element);
+	}
+	
+	public synchronized void addAll(String prefix_name, Map<String, String> values) {
+		if (values == null) {
+			Log2DumpElement element = new Log2DumpElement();
+			element.name = strnull(prefix_name);
+			element.value = strnull(null);
+			elements.add(element);
+			return;
+		}
+		if (values.size() == 0) {
+			Log2DumpElement element = new Log2DumpElement();
+			element.name = strnull(prefix_name);
+			element.value = String.valueOf(0);
+			elements.add(element);
+			return;
+		}
+		for (Map.Entry<String, String> entry : values.entrySet()) {
+			Log2DumpElement element = new Log2DumpElement();
+			element.name = prefix_name + "[" + entry.getKey() + "]";
+			element.value = entry.getValue();
+			elements.add(element);
+		}
 	}
 	
 	@SuppressWarnings("rawtypes")

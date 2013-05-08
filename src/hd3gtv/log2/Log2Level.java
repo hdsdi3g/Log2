@@ -18,7 +18,7 @@
 package hd3gtv.log2;
 
 public enum Log2Level {
-	DEBUG, INFO, ERROR, NONE;
+	DEBUG, INFO, ERROR, SECURITY, NONE;
 	
 	boolean isMostImportant(Log2Level compare) {
 		
@@ -40,11 +40,17 @@ public enum Log2Level {
 		if (compare == ERROR) {
 			comparelevel = 2;
 		}
+		if (compare == SECURITY) {
+			comparelevel = 3;
+		}
 		if (this == INFO) {
 			thislevel = 1;
 		}
 		if (this == ERROR) {
 			thislevel = 2;
+		}
+		if (this == SECURITY) {
+			thislevel = 3;
 		}
 		if (comparelevel > thislevel) {
 			return true;

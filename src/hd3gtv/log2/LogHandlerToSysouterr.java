@@ -26,7 +26,7 @@ public class LogHandlerToSysouterr implements LogHandler {
 			return;
 		}
 		
-		if (event.level.equals(Log2Level.ERROR)) {
+		if (event.error != null) {
 			System.err.println(value);
 		} else {
 			System.out.println(value);
