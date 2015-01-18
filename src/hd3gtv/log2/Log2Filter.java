@@ -64,4 +64,16 @@ public class Log2Filter implements Log2Dumpable {
 		return filtertype;
 	}
 	
+	public String getBaseclassname() {
+		return baseclassname;
+	}
+	
+	public Log2FilterType getFiltertype() {
+		return filtertype;
+	}
+	
+	public Log2Level getLevel() {
+		return level;
+	}
+	
 }

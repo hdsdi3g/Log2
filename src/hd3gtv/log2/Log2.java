@@ -143,14 +143,19 @@ public class Log2 {
 	 * Si l'event correspond a baseclassname && event >= level alors on affiche en suivant filtertype.
 	 * Si l'event correspond a baseclassname && event < level alors on ne l'affiche pas du tout.
 	 */
-	public void createFilter(String baseclassname, Log2Level level, Log2FilterType filtertype) throws NullPointerException {
-		Log2Filter filter = new Log2Filter(baseclassname, level, filtertype);
-		filters.add(filter);
+	public synchronized void createFilter(String baseclassname, Log2Level level, Log2FilterType filtertype) throws NullPointerException {
+		filters.add(new Log2Filter(baseclassname, level, filtertype));
 	}
 	
-	public Log2Dump getFilters() {
-		Log2Dump dump = new Log2Dump();
-		dump.add("filters", filters);
-		return dump;
+	public synchronized void updateFilter(int index, String baseclassname, Log2Level level, Log2FilterType filtertype) throws NullPointerException {
+		filters.set(index, new Log2Filter(baseclassname, level, filtertype));
+	}
+	
+	public synchronized void removeFilter(int index) {
+		filters.remove(index);
+	}
+	
+	public synchronized ArrayList<Log2Filter> getFilters() {
+		return filters;
 	}
 }
