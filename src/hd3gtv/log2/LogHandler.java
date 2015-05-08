@@ -21,4 +21,6 @@ public interface LogHandler {
 	
 	public void onLog2Event(Log2Event event);
 	
+	public void onRawLogEvent(String message, boolean error);
+	
 }

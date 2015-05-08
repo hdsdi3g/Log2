@@ -33,4 +33,15 @@ public class LogHandlerToSysouterr implements LogHandler {
 		}
 		
 	}
+	
+	public void onRawLogEvent(String message, boolean error) {
+		if (message == null) {
+			return;
+		}
+		if (error) {
+			System.err.println(message);
+		} else {
+			System.out.println(message);
+		}
+	}
 }

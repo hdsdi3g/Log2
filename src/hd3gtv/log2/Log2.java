@@ -42,6 +42,31 @@ public class Log2 {
 		}
 	}
 	
+	/**
+	 * Write with no control a message in logs.
+	 * @param caller_reference maybe null
+	 * @param message maybe null
+	 */
+	public synchronized void rawEvent(String caller_reference, String message, boolean error) {
+		if ((caller_reference == null) && (message == null)) {
+			return;
+		}
+		
+		StringBuffer sb = new StringBuffer();
+		if (caller_reference != null) {
+			sb.append("[");
+			sb.append(caller_reference);
+			sb.append("] ");
+		}
+		if (message != null) {
+			sb.append(message);
+		}
+		
+		for (int i = 0; i < handlers.size(); i++) {
+			handlers.get(i).onRawLogEvent(sb.toString(), error);
+		}
+	}
+	
 	public ArrayList<LogHandler> getHandlers() {
 		return handlers;
 	}

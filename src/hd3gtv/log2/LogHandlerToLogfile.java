@@ -51,28 +51,7 @@ public class LogHandlerToLogfile implements LogHandler {
 	}
 	
 	public synchronized void onLog2Event(Log2Event event) {
-		String value = event.toStringVerbose();
-		if (value == null) {
-			return;
-		}
-		
-		FileWriter fw = null;
-		try {
-			fw = new FileWriter(logfile, true);
-			fw.write(value);
-			fw.write(Log2Event.LINESEPARATOR);
-			fw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (fw != null) {
-					fw.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		onRawLogEvent(event.toStringVerbose(), false);
 	}
 	
 	/**
@@ -114,5 +93,29 @@ public class LogHandlerToLogfile implements LogHandler {
 		bis.close();
 		gzip.close();
 		temp.delete();
+	}
+	
+	public void onRawLogEvent(String value, boolean error) {
+		if (value == null) {
+			return;
+		}
+		
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(logfile, true);
+			fw.write(value);
+			fw.write(Log2Event.LINESEPARATOR);
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fw != null) {
+					fw.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
